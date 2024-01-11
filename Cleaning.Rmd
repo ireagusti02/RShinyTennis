@@ -1,0 +1,119 @@
+```{r}
+# ---
+# title: "Court Finder"
+# author: "Irene and Sam R"
+# date: "2023-11-10"
+# output: rmd_document
+# ---
+```
+
+```{r}
+# Libraries 
+library(dplyr) 
+library(ggplot2)
+library(stringr) 
+```
+
+```{r} 
+# Reading data 
+courts = read.csv("~/Desktop/shinyProjectFiles/Starter .csv's/tennis_courts.csv", header = TRUE, row.names = NULL)
+stateMerge = read.csv("~/Desktop/shinyProjectFiles/Starter .csv's/table-data.csv") 
+
+# Cleaning -> Joining with state_polys 
+stateMerge$state = str_to_lower(stateMerge$state)
+state_polys = map_data("state") 
+state_polys = inner_join(state_polys, stateMerge, by = c("region" = "state")) 
+
+# Keeping the uppercase abbreviations and dropping the lowercase full names 
+state_polys = select(state_polys, long, lat, group, order, code) %>% 
+  mutate(region = code) %>% 
+  select(-code)
+
+# Adjusting column names 
+colnames(courts)[1] = "Name"
+colnames(courts)[2] = "Address" 
+colnames(courts)[3] = "City"
+colnames(courts)[4] = "State"
+colnames(courts)[5] = "ZipCode"
+colnames(courts)[6] = "Access"
+colnames(courts)[7] = "Count" 
+colnames(courts)[8] = "Clay" 
+colnames(courts)[9] = "Wall1" 
+colnames(courts)[10] = "Grass" 
+colnames(courts)[11] = "Indoor1" 
+colnames(courts)[12] = "Lights1" 
+colnames(courts)[13] = "Proshop1" 
+colnames(courts)[14] = "Latitude" 
+colnames(courts)[15] = "Longitude" 
+
+# Changing wordiness 
+courts$Access = str_replace_all(courts$Access, "Homeowners Community", "Private")
+
+#Changing column values into better displayable entries for data table
+courts <- courts %>%
+  mutate(Wall2 = as.logical(Wall1),
+         Proshop2 = as.logical(Proshop1),
+         Indoor2 = as.logical(Indoor1),
+         Lights2 = as.logical(Lights1),
+         Wall = ifelse(Wall2, "Yes", "No"),
+         Proshop = ifelse(Proshop2, "Yes", "No"),
+         Indoor = ifelse(Indoor2, "Yes", "No"),
+         Lights = ifelse(Lights2, "Yes", "No")) %>% 
+  select(-Wall2, -Wall1, 
+         -Proshop2, -Proshop1, 
+         -Indoor2, -Indoor1, 
+         -Lights2, -Lights1)
+
+# (Dropping column 16, which was random meta data) 
+courts <- select(courts, -longitude)
+
+# Changing cities to title case 
+courts$City = str_to_title(courts$City) 
+
+# Capitalizing state abbreviations 
+courts$State = str_to_upper(courts$State)
+
+# Creating a new data frame to work towards making a surface column. 
+# Keeping Name and Address to join to courts later.
+# Keeping Clay and Grass. Values for Hard courts will be based 
+# on a truth table. 
+temp_surface = data.frame(Name = courts$Name, 
+                          Address = courts$Address, 
+                          Clay = courts$Clay, 
+                          Grass = courts$Grass) 
+
+# Converting CLay and Grass to booleans 
+temp_surface$Clay = as.logical(temp_surface$Clay)
+temp_surface$Grass = as.logical(temp_surface$Grass)
+
+# Mutating using logical evaluation 
+surface = mutate(temp_surface, Hard = !(temp_surface$Clay | temp_surface$Grass))
+
+# Logic to calculate the surface, and then drop Hard, Clay, and Grass columns 
+surface = surface %>%
+  mutate(Surface = ifelse(Grass, 'Grass',
+                          ifelse(Hard, 'Hard',
+                                 ifelse(Clay, 'Clay', NA_character_))))%>% 
+  select(-Hard, -Clay, -Grass) 
+
+# Court and surface: joining back 
+cands = left_join(courts, surface, by = c("Name", "Address")) %>% 
+  
+  # Removing Clay and Grass columns 
+  select(-Clay, -Grass, -Address, -ZipCode) %>% 
+  unique() 
+
+# List of states we choose not to display. 
+# These states do not have clean lat/long values that fall within polys. 
+BadStates = c("DC", "DE", "IL", "KY", "MA", "MO", "OH", "PA", "NC", "NV", "NY")
+
+cands <- cands %>%
+  filter(!State %in% BadStates)
+
+State = sort(as.character(unique(cands$State)))
+
+write.csv(cands, "~/Desktop/shinyProjectFiles/CleanData.csv", row.names = FALSE)
+
+write.csv(state_polys, "~/Desktop/shinyProjectFiles/state_polys.csv", row.names = FALSE)
+```
+

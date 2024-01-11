@@ -1,0 +1,125 @@
+
+Project Information 
+
+Component files from the folder: 
+
+-> app.R - UI and Server code 
+
+-> CitationsSources.txt - A citation as well as links and brief description of 
+                          data sources 
+                          
+-> Info.txt - (Current file) Files, motivation, explanation of data, features, 
+              and relevant findings 
+              
+-> Starter .csv's - Original, uncleaned data that was used 
+
+-> Cleaning.Rmd - Code to produce a clean .csv 
+
+-> CleanData.csv - Cleaned data produced by Cleaning.Rmd and used in app.R 
+
+-> state_polys.csv - Cleaned data produced by Cleaning.Rmd and used in app.R 
+
+
+Motivation: 
+
+-> We both play on the Grinnell College varsity tennis team! 
+
+-> Finding where to play in Iowa is not an easy task, our data set showed no 
+   court data in our state. Objectively we know there are some places mostly in 
+   Des Moines 
+   
+-> Easily accessing court info in the desired area.
+
+
+Explanation of Data Sources: 
+
+-> tennis_courts.csv 
+
+    -> Source from Kaggle and Data World 
+  
+    -> Over 29,000 courts
+  
+    -> Organized by location (with coordinates) 
+  
+    -> Includes features and descriptions such as access, number of cours, type 
+       of surface, etc. 
+     
+    -> Acknowledgement: This is an old data set; not all tennis courts in the US 
+       are listed, and coordinates may be imprecise. We have removed states with 
+       very poorly recorded coordinates. 
+
+-> table-data.csv
+
+    -> This was used to merge tennis_courts.csv with map_data("state") polys
+  
+
+Description of Features: 
+
+-> Feature 1: Four filters in the sidebar 
+
+    -> Select Access: Check box inputs with a choice of public and/or courts 
+                      (must select at least one)
+                        
+    -> Select Surface(s): Check box inputs with a choice of Hard, Clay, and/or 
+                          Grass (must select at least one) 
+                        
+    -> Select State: Drop down input to select a single state
+  
+    -> Court Count: Slider to select a number of courts (1-50) 
+  
+-> Feature 2: plotly
+
+    -> If a user does not select at least one type of access and surface, then 
+       there will be no graph or table displayed as there is no data available 
+     
+    -> If a user selects at least one type of access and surface but there are 
+       no existing courts in the state which match the filter options, then 
+       a message will be displayed and the state will be grayed out 
+     
+    -> The graph will constantly refresh with a spinner when new inputs are 
+       given 
+       
+    -> There are two keys for the legend: access and surface. Access is 
+       characterized by circle or triangle. Surface is characterized by blue for 
+       Hard, orange for Clay, and green for Grass 
+       
+    -> There is hover text for the plotly which displays the name, access, and 
+       surface 
+
+    -> Since the graph is a plotly, users are able to zoom in 
+       
+-> Feature 3: Data table 
+
+    -> The data table includes the four filtered variables along with the rest 
+       of the other hidden variables from the data set. 
+       
+    -> The data table serves as a way to track categorical and numerical info 
+       corresponding to each specific court. 
+       
+    -> Users can change low/high sort for columns or use the search bar to 
+       further narrow down their search. 
+       
+-> Feature 4: Street Map 
+
+    -> The street map uses a leaflet to add a street map 
+    
+    -> It uses the same reactive filters used by the plotly, so it will show 
+       the courts for the selected state and filter only 
+
+
+Relevant Findings 
+
+    -> While the data set may be incomplete, the graph allows us to visualize 
+       density, hoverable info and distribution within each state 
+
+    -> Using the plotly as well as the leaflet, users are able to see that the 
+       major clusters in each state are centered around the major cities 
+
+
+
+
+
+
+
+
+

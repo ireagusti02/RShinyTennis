@@ -1,0 +1,23 @@
+
+Title:  Tennis Court Finder
+Author: Irene and Sam R
+Date:   2023-11-10
+
+Citation: https://shiny.posit.co/r/gallery/education/ncaa-swim-team-finder/ 
+  This is the RShiny App (Swim Teams) which served as a basis for our app, 
+  Tennis Court Finder. We reduced our scope to one tab, Program Finder in 
+  the Swim Teams app, and repurposed/redesigned the functions and layout
+  to fit our needs. 
+
+Source: https://data.world/mglobel/tennis-courts
+	https://www.kaggle.com/datasets/thedevastator/us-tennis-courts-capacity-and-amenities
+File: tennis_courts.csv 
+  We originally used a .csv file from Kaggle, but found that this source 
+  had the same information as the Kaggle file as well as a column for court 
+  name, so we decided to change to this file. 
+
+Source: https://worldpopulationreview.com/states/state-abbreviations
+File: table-data.csv 
+  We selected this file in order to join map_data("state) with courts.
+  map_data("state") had lowercase, fully spelled out state names, 
+  which we replace with the uppercase abbreviations from table-data.csv. 
