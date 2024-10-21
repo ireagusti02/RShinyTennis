@@ -8,7 +8,7 @@ This is an R-shiny app that displays various aspects of tennis courts around the
 - `app.R`: Contains the UI and server code for the app.
 - `CitationsSources.txt`: Provides citations, links, and brief descriptions of the data sources.
 - `Info.txt`: Describes the files, motivation, explanation of data, features, and relevant findings (current file).
-- **Starter .csv's**: The original, uncleaned data that was used.
+- `Starter .csv's`: The original, uncleaned data that was used.
 - `Cleaning.Rmd`: Code used to produce a cleaned `.csv` file.
 - `CleanData.csv`: Cleaned data produced by `Cleaning.Rmd` and used in `app.R`.
 - `state_polys.csv`: Data on state boundaries cleaned and used in `app.R`.
