@@ -17,7 +17,7 @@ This is an R-shiny app that displays various aspects of tennis courts around the
 
 For a detailed explanation of the project's motivation, data sources, features, and relevant findings, please refer to `Info.txt`.
 
-### Citations
+### Acknowledgements
 - [RShiny NCAA Swim Teams App](https://shiny.posit.co/r/gallery/education/ncaa-swim-team-finder/)  
   This is the RShiny app (Swim Teams) which served as a basis for our app, Tennis Court Finder. We reduced our scope to one tab, Program Finder in the Swim Teams app, and repurposed/redesigned the functions and layout to fit our needs.
   
